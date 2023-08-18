@@ -52,26 +52,5 @@ class Table:
     def __iter__(self):
         pass
 
-
-if __name__ == "__main__":
-    t = Table(2, 3, 4, 5, func=lambda x: x * x)
-
-    t["x"] = "string"
-    t.y = 45
-    t[200] = lambda s: "### " + s + " ###"
-
-    assert t.x == "string"
-    assert t["y"] == 45
-    assert t[1] == 2
-    assert t[2] == 3
-    assert t[3] == 4
-    assert t[4] == 5
-    assert t.func(5) == 25
-    assert t["non_existence"] is None
-    assert t[200]("hello") == "### hello ###"
-
-    del t[4]
-    assert t[4] is None
-
-    t[4] = 100
-    assert t[4] == 100
+    def __repr__(self) -> str:
+        return f"table: {hex(id(self))}"
