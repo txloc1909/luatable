@@ -47,7 +47,7 @@ class Table:
         self[item] = None
 
     def __len__(self) -> int:
-        return len(self._array_part) + len(self._hash_part)
+        return len(self._array_part)
 
     def __repr__(self) -> str:
         return f"table: {hex(id(self))}"
