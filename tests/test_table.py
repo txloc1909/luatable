@@ -26,3 +26,6 @@ def test_table():
 
     t[4] = 100
     assert t[4] == 100
+
+    del t.x
+    assert t["x"] == None

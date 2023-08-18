@@ -24,7 +24,7 @@ class Table:
             super().__setattr__(name, value)
 
     def __delattr__(self, name: str) -> None:
-        pass
+        del self._hash_part[name]
 
     def __getitem__(self, item: Any) -> Any:
         if isinstance(item, int) and item < len(self._array_part):
@@ -48,9 +48,6 @@ class Table:
 
     def __len__(self) -> int:
         return len(self._array_part) + len(self._hash_part)
-
-    def __iter__(self):
-        pass
 
     def __repr__(self) -> str:
         return f"table: {hex(id(self))}"
