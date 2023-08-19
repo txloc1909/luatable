@@ -70,14 +70,12 @@ class Table:
         positive_int_key = lambda key: _can_be_int(key) and key > 0
         for k in filter(positive_int_key, self._hash_part.keys()):
             i = ceil(log2(k))                   # bucket that `k` belongs to
-            if i < len(buckets):
-                buckets[i] += 1
-                int_keys_in_hash_part.append(k)
-            else:   # i >= len(buckets)
+            if i >= len(buckets):
                 num_new_buckets = i - len(buckets) + 1
                 buckets.extend([0] * num_new_buckets)
-                buckets[-1] += 1
-                int_keys_in_hash_part.append(k)
+
+            buckets[-1] += 1
+            int_keys_in_hash_part.append(k)
 
         return buckets, int_keys_in_hash_part
 
@@ -99,7 +97,7 @@ class Table:
             self._array_part[index] = value
             return
 
-        # Grow array part, if necessary
+        # Grow the array part
         ## First, counting positive integer keys in table
         buckets, int_keys_in_hash_part = self._count_positive_int_key()
 
