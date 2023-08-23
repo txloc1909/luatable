@@ -51,7 +51,7 @@ class Table:
         self[item] = None
 
     def __len__(self) -> int:
-        for i, v in enumerate(l[1:], start=1):
+        for i, v in enumerate(self._array_part[1:], start=1):
             if v is None:
                 return i - 1
 

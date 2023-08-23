@@ -17,6 +17,7 @@ def test_table():
     assert t[1] == 2
     assert t[2] == 3
     assert t[3] == 4
+    assert len(t) == 3
     assert t.foo == "bar"
     assert t.func(5) == 10
     assert t.func("a") == "aa"

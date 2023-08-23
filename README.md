@@ -21,6 +21,11 @@ print(t["bar"])         # baz
 print(t[1000]["hello"]) # world
 print(t.addTwo(1))      # 3
 print(t["what"])        # None
+print(len(t))           # 4
+
+# index by `None` is forbidden
+print(t[None])          # None
+t[None] = 1             # ValueError: table index is nil
 
 for k, v in ipairs(t):
     print(k, v)         # 1 1
