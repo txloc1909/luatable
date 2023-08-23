@@ -5,6 +5,7 @@ Bring Lua's table to the Python world.
 ## Goals
 1. Identical behavior
 1. As performance as possible
+1. No external dependency
 
 ## Features
 

@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "luatable"
 version = "0.1.0"
-description = "Lua 5.0 table implementation in Python"
+description = "Lua 5.4 table implementation in Python"
 authors = ["Tran Xuan Loc <tranxuanloc19920@gmail.com>"]
 license = "MIT"
 readme = "README.md"
@@ -12,8 +12,21 @@ python = ">=3.10"
 [tool.poetry.group.dev.dependencies]
 mypy = "^1.5.1"
 pytest = "^7.4.0"
-
+pytest-cov = "^4.1.0"
+tox = "^4.10.0"
 
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.pytest.ini_options]
+addopts = "--cov=luatable"
+testpaths = [ "tests", ]
+
+[tool.mypy]
+mypy_path = "src"
+check_untyped_defs = true
+warn_redundant_casts = true
+warn_return_any = true
+warn_unreachable = true
+warn_unused_configs = true
