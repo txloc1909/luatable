@@ -38,6 +38,9 @@ class Table:
         return self._hash_part.get(item)
 
     def __setitem__(self, index: Any, value: Any) -> None:
+        if index is None:
+            raise ValueError("table index is nil")
+
         if _can_be_int(index):
             self._set_int_key(index, value)
             return

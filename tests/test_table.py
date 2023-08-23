@@ -1,3 +1,5 @@
+import pytest
+
 from luatable import Table
 
 
@@ -8,7 +10,9 @@ def test_table():
     t.y = 45
     t[100] = lambda x, y: " ".join([x, y + "!"])
 
-    assert t.x == "string"
+    with pytest.raises(ValueError, match="table index is nil"):
+        t[None] = 1
+
     assert t["y"] == 45
     assert t[1] == 2
     assert t[2] == 3
