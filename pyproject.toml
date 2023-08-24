@@ -20,7 +20,7 @@ requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.pytest.ini_options]
-addopts = "--cov=luatable"
+addopts = "--cov=luatable --cov-report term-missing"
 testpaths = [ "tests", ]
 
 [tool.mypy]
