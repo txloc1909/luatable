@@ -90,7 +90,7 @@ class Table:
     def _optimal_array_size(buckets: list[int]) -> int:
         optimal: int = 0
         cum_sum: int = 0
-        for i, count in enumerate(buckets, start=1):
+        for i, count in enumerate(buckets):
             cum_sum += count
             if cum_sum >= 2**(i-1):
                 optimal = 2**i
