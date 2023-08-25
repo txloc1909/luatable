@@ -100,12 +100,14 @@ class Table:
         if index < 0:               # Negative key always goes into hash part
             self._hash_part[index] = value
             return
-        elif 0 <= index < len(self._array_part): # Trivial case for array part
+        elif 0 <= index < len(self._array_part) and index + 1 not in self._hash_part:
             self._array_part[index] = value
             return
 
+        self._hash_part[index] = value
+
         # Grow the array part
-        ## First, counting positive integer keys in table
+        ## Counting positive integer keys in table
         buckets, int_keys_in_hash_part = self._count_positive_int_key()
 
         ## Calculate optimal size for array part
@@ -115,13 +117,8 @@ class Table:
         extra_size = optimal - len(self._array_part) + 1
         self._array_part.extend([None] * extra_size)
 
-        moving_keys = filter(lambda key: key <= optimal, int_keys_in_hash_part)
-        for k in moving_keys:
+        for k in int_keys_in_hash_part:
+            if k > optimal:
+                continue
             self._array_part[k] = self._hash_part[k]
             del self._hash_part[k]
-
-        # Finally, assign the index
-        if index < len(self._array_part):
-            self._array_part[index] = value
-        else:
-            self._hash_part[index] = value

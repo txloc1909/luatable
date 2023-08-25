@@ -4,11 +4,6 @@ from luatable import Table
 
 
 @pytest.fixture
-def empty_table():
-    return Table()
-
-
-@pytest.fixture
 def array_table():
     return Table(1, 2, 3, 4, 5)
 
@@ -43,10 +38,11 @@ def test_index_none(mix_table):
         mix_table[None] = 1
 
 
-def test_table_as_index(empty_table):
+def test_table_as_index():
     t = Table()
-    empty_table[t] = True
-    assert empty_table[t]
+    i = Table()
+    t[i] = True
+    assert t[i]
 
 
 def test_table_equality():
@@ -83,6 +79,18 @@ def test_del_item(mix_table):
     assert mix_table["bar"] is None
 
 
+def test_array_grow():
+    t = Table()
+    t[2] = 2
+    assert len(t) == 0
+    t[1] = 1
+    assert len(t) == 2
+    t[3] = 3
+    assert len(t) == 3
+    t[4] = 4
+    assert len(t) == 4
+
+
 def test_create_hole_in_array(array_table):
     assert len(array_table) == 5
     del array_table[4]
@@ -97,9 +105,10 @@ def test_fill_hole_in_array(array_with_hole):
     assert len(array_with_hole) == 5
 
 
-def test_create_sparse_table(empty_table):
-    empty_table[2] = True
-    empty_table[5] = True
-    empty_table[10] = True
-    empty_table[100] = True
-    assert len(empty_table) == 0
+def test_create_sparse_table():
+    t = Table()
+    t[2] = True
+    t[5] = True
+    t[10] = True
+    t[100] = True
+    assert len(t) == 0
