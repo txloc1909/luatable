@@ -1,3 +1,6 @@
+import re
+from platform import python_implementation
+
 import pytest
 
 from luatable import Table
@@ -31,6 +34,11 @@ def array_with_hole():
 ])
 def test_index_access(mix_table, index, expected):
     assert mix_table[index] == expected
+
+
+def test_float_key_access(array_table):
+    for i in range(len(array_table)):
+        assert array_table[i] == array_table[float(i)]
 
 
 def test_index_none(mix_table):
@@ -112,3 +120,8 @@ def test_create_sparse_table():
     t[10] = True
     t[100] = True
     assert len(t) == 0
+
+@pytest.mark.skipif(python_implementation() != "CPython",
+                    reason="Depend on CPython implementation details of `id()`")
+def test_table_to_str():
+    assert re.match(r"table: 0x[0-9a-f]{12}", str(Table()))
