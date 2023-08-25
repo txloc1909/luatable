@@ -5,7 +5,7 @@ from luatable import Table
 
 def ipairs(t: Table) -> Iterator[tuple[int, Any]]:
     for i, v in enumerate(t._array_part[1:], start=1):
-        if not v:
+        if v is None:
             break
 
         yield i, v
