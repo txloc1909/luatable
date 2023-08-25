@@ -3,32 +3,103 @@ import pytest
 from luatable import Table
 
 
-def test_table():
-    t = Table(2, 3, 4, foo="bar", func=lambda x: x+x)
+@pytest.fixture
+def empty_table():
+    return Table()
 
-    t["x"] = "string"
-    t.y = 45
-    t[100] = lambda x, y: " ".join([x, y + "!"])
 
+@pytest.fixture
+def array_table():
+    return Table(1, 2, 3, 4, 5)
+
+
+@pytest.fixture
+def hash_table():
+    return Table(foo="bar", bar="baz", baz=False, pi=3.14)
+
+
+@pytest.fixture
+def mix_table():
+    return Table(1, 2, 3, 4, 5, 6, foo="bar", bar="baz", pi=3.14)
+
+
+@pytest.fixture
+def array_with_hole():
+    t = Table(1, 2, 3)
+    t[5] = 5
+    return t
+
+
+@pytest.mark.parametrize("index,expected", [
+        (0, None), (1, 1), (7, None),
+        ("foo", "bar"), ("pi", 3.14), ("baz", None),
+])
+def test_index_access(mix_table, index, expected):
+    assert mix_table[index] == expected
+
+
+def test_index_none(mix_table):
     with pytest.raises(ValueError, match="table index is nil"):
-        t[None] = 1
+        mix_table[None] = 1
 
-    assert t["y"] == 45
-    assert t[1] == 2
-    assert t[2] == 3
-    assert t[3] == 4
-    assert len(t) == 3
-    assert t.foo == "bar"
-    assert t.func(5) == 10
-    assert t.func("a") == "aa"
-    assert t["non_existence"] is None
-    assert t[100]("hello", "world") == "hello world!"
 
-    del t[2]
-    assert t[2] is None
+def test_table_as_index(empty_table):
+    t = Table()
+    empty_table[t] = True
+    assert empty_table[t]
 
-    t[4] = 100
-    assert t[4] == 100
 
-    del t.x
-    assert t["x"] == None
+def test_table_equality():
+    t1 = Table(1, foo="bar")
+    t2 = Table(1, foo="bar")
+    t3 = t1
+    assert t1 == t3
+    assert t1 != t2
+
+
+def test_dot_access(hash_table):
+    assert hash_table["foo"] == hash_table.foo
+    assert hash_table["bar"] == hash_table.bar
+    assert hash_table.pi == 3.14
+    assert hash_table[hash_table.foo] == "baz"
+
+
+def test_dot_assign(hash_table):
+    hash_table.key = "value"
+    assert hash_table["key"] == "value"
+
+
+def test_del_attr(hash_table):
+    assert hash_table.baz == False
+    del hash_table.baz
+    assert hash_table.baz is None
+
+
+def test_del_item(mix_table):
+    del mix_table[2]
+    assert mix_table[2] is None
+
+    del mix_table["bar"]
+    assert mix_table["bar"] is None
+
+
+def test_create_hole_in_array(array_table):
+    assert len(array_table) == 5
+    del array_table[4]
+    assert len(array_table) == 3
+
+
+def test_fill_hole_in_array(array_with_hole):
+    assert len(array_with_hole) == 3
+    assert array_with_hole[5] == 5
+    assert array_with_hole[4] is None
+    array_with_hole[4] = 4
+    assert len(array_with_hole) == 5
+
+
+def test_create_sparse_table(empty_table):
+    empty_table[2] = True
+    empty_table[5] = True
+    empty_table[10] = True
+    empty_table[100] = True
+    assert len(empty_table) == 0
