@@ -1,6 +1,6 @@
-from typing import Iterator, Any
+from typing import Any, Iterator
 
-from luatable import Table
+from ._table import Table
 
 
 def ipairs(t: Table) -> Iterator[tuple[int, Any]]:

@@ -13,7 +13,7 @@ def concat(list_: Table, sep: str = "", i: int = 1, j: Optional[int] = None) -> 
     return NotImplemented
 
 
-def insert(list_: Table, value: Any, pos: Optional[int] = None) -> None:
+def insert(list_: Table, value: Any, pos: Optional[int] = None):
     return NotImplemented
 
 
