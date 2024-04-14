@@ -74,7 +74,10 @@ class Table:
 
         # then, count in hash part
         int_keys_in_hash_part: list[int] = []
-        positive_int_key = lambda key: _can_be_int(key) and key > 0
+
+        def positive_int_key(key):
+            return _can_be_int(key) and key > 0
+
         for k in filter(positive_int_key, self._hash_part.keys()):
             i = ceil(log2(k))                   # bucket that `k` belongs to
             if i >= len(buckets):
@@ -107,13 +110,13 @@ class Table:
         self._hash_part[index] = value
 
         # Grow the array part
-        ## Counting positive integer keys in table
+        # Counting positive integer keys in table
         buckets, int_keys_in_hash_part = self._count_positive_int_key()
 
-        ## Calculate optimal size for array part
+        # Calculate optimal size for array part
         optimal = self._optimal_array_size(buckets)
 
-        ## Extend array part and move keys from hash part
+        # Extend array part and move keys from hash part
         extra_size = optimal - len(self._array_part) + 1
         self._array_part.extend([None] * extra_size)
 

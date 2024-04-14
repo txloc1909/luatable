@@ -29,8 +29,8 @@ def array_with_hole():
 
 
 @pytest.mark.parametrize("index,expected", [
-        (0, None), (1, 1), (7, None),
-        ("foo", "bar"), ("pi", 3.14), ("baz", None),
+    (0, None), (1, 1), (7, None),
+    ("foo", "bar"), ("pi", 3.14), ("baz", None),
 ])
 def test_index_access(mix_table, index, expected):
     assert mix_table[index] == expected
@@ -120,6 +120,7 @@ def test_create_sparse_table():
     t[10] = True
     t[100] = True
     assert len(t) == 0
+
 
 @pytest.mark.skipif(python_implementation() != "CPython",
                     reason="Depend on CPython implementation details of `id()`")
