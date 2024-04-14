@@ -1,5 +1,5 @@
-from typing import Final, Any
-from math import log2, ceil
+from math import ceil, log2
+from typing import Any, Final
 
 
 def _can_be_int(x: int | float) -> bool:
@@ -62,11 +62,11 @@ class Table:
 
     def _count_positive_int_key(self) -> tuple[list[int], list[int]]:
         # buckets[i]: number of int key k where: 2**(i-1) < k <= 2**i
-        buckets: list[int] = [0, ]
+        buckets: list[int] = [0]
 
         # first, count in array part
         for i, v in enumerate(self._array_part[1:], start=1):
-            if i > 2**(len(buckets) - 1):
+            if i > 2 ** (len(buckets) - 1):
                 buckets.append(0)
 
             if v is not None:
@@ -79,7 +79,7 @@ class Table:
             return _can_be_int(key) and key > 0
 
         for k in filter(positive_int_key, self._hash_part.keys()):
-            i = ceil(log2(k))                   # bucket that `k` belongs to
+            i = ceil(log2(k))  # bucket that `k` belongs to
             if i >= len(buckets):
                 num_new_buckets = i - len(buckets) + 1
                 buckets.extend([0] * num_new_buckets)
@@ -95,12 +95,12 @@ class Table:
         cum_sum: int = 0
         for i, count in enumerate(buckets):
             cum_sum += count
-            if cum_sum >= 2**(i-1):
+            if cum_sum >= 2 ** (i - 1):
                 optimal = 2**i
         return optimal
 
     def _set_int_key(self, index: int, value: Any) -> None:
-        if index < 0:               # Negative key always goes into hash part
+        if index < 0:  # Negative key always goes into hash part
             self._hash_part[index] = value
             return
         elif 0 <= index < len(self._array_part) and index + 1 not in self._hash_part:
