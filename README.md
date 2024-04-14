@@ -24,6 +24,9 @@ print(t.addTwo(1))      # 3
 print(t["what"])        # None
 print(len(t))           # 4
 
+# integer keys are equivalent to their float counterpart
+print(t[1] is t[1.0])   # True
+
 # index by `None` is forbidden
 print(t[None])          # None
 t[None] = 1             # ValueError: table index is nil
