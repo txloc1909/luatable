@@ -59,3 +59,4 @@ for k, v in pairs(t):
     - `table.sort`
     - `table.unpack`
 - [ ] Support metatables
+- [ ] Figure out behavior when indexing table with slice
