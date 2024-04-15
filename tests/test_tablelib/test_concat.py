@@ -31,4 +31,4 @@ def test_concat_nil():
 @pytest.mark.parametrize("value", [None, True, False, Table()])
 def test_invalid_values(value):
     with pytest.raises(ValueError):
-        _ = concat(Table("hello", value))
+        _ = concat(Table("hello", "world", value, "here"))
