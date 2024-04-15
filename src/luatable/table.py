@@ -10,7 +10,13 @@ from luatable import Table
 
 
 def concat(list_: Table, sep: str = "", i: int = 1, j: Optional[int] = None) -> str:
-    return NotImplemented
+    if not j:
+        j = len(list_)
+
+    if i > j:
+        return ""
+
+    return sep.join(list_[idx] for idx in range(i, j + 1))
 
 
 def insert(list_: Table, value: Any, pos: Optional[int] = None):
