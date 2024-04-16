@@ -28,10 +28,17 @@ def array_with_hole():
     return t
 
 
-@pytest.mark.parametrize("index,expected", [
-    (0, None), (1, 1), (7, None),
-    ("foo", "bar"), ("pi", 3.14), ("baz", None),
-])
+@pytest.mark.parametrize(
+    "index,expected",
+    [
+        (0, None),
+        (1, 1),
+        (7, None),
+        ("foo", "bar"),
+        ("pi", 3.14),
+        ("baz", None),
+    ],
+)
 def test_index_access(mix_table, index, expected):
     assert mix_table[index] == expected
 
@@ -99,6 +106,11 @@ def test_array_grow():
     assert len(t) == 4
 
 
+def test_len_table():
+    t = Table(1, 2, 3, 4, None, 5)
+    assert len(t) == 6
+
+
 def test_create_hole_in_array(array_table):
     assert len(array_table) == 5
     del array_table[4]
@@ -122,7 +134,9 @@ def test_create_sparse_table():
     assert len(t) == 0
 
 
-@pytest.mark.skipif(python_implementation() != "CPython",
-                    reason="Depend on CPython implementation details of `id()`")
+@pytest.mark.skipif(
+    python_implementation() != "CPython",
+    reason="Depend on CPython implementation details of `id()`",
+)
 def test_table_to_str():
     assert re.match(r"table: 0x[0-9a-f]{12}", str(Table()))
